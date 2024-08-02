@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        body {
+            font-family:  "Hind Siliguri", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #FFF7F2;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-form h2 {
+            color: #E87132;
+        }
+
+        .login-form p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-top: 1em;
+            color: #333;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 0.5em;
+            margin-top: 0.5em;
+            border: 1px solid #E87132;
+            border-radius: 4px;
+            height: 30px;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 0.7em;
+            margin-top: 1em;
+            background-color: #E87132;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            height: 60px;
+        }
+
+        .login-form button:hover {
+            background-color: #0056b3;
+        }
+      .logo{
+        width: 88px;
+        height: 58px;
+      }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+        apiKey: "AIzaSyBADes_aelrE2zg7vfBfUahjuzNlHeVjJc",
+        authDomain: "mohamaya-user-app.firebaseapp.com",
+        projectId: "mohamaya-user-app",
+        storageBucket: "mohamaya-user-app.appspot.com",
+        messagingSenderId: "1080841164932",
+        appId: "1:1080841164932:web:458f0ca9f9158a94f7cad1"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the user is already logged in
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in, redirect to homepage
+                    window.location.href = "index.html";
+                }
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('password').value;
+
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        // Login successful, redirect to homepage
+                        window.location.href = "index.html";
+                    })
+                    .catch((error) => {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        alert(errorMessage);
+                    });
+            });
+
+            document.getElementById('forgotPassword').addEventListener('click', function () {
+                var email = prompt("Please enter your email:");
+                if (email) {
+                    firebase.auth().sendPasswordResetEmail(email)
+                        .then(() => {
+                            alert("Password reset email sent!");
+                        })
+                        .catch((error) => {
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            alert(errorMessage);
+                        });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="login-form">
+          <img src='https://firebasestorage.googleapis.com/v0/b/mohamaya-user-app.appspot.com/o/Mohamaya-User-App%2Flogo%20(1).svg?alt=media&token=fc8cc600-39d1-4e50-a917-ebcc2ba881b8' alt="logo" class="logo">
+            <h2>লগইন করুন</h2>
+            <p>আমরা আনন্দিত যে আপনি আমাদের সাথে আছেন। যেকোনো প্রয়োজন বা প্রশ্নের জন্য আমরা সবসময় আপনার পাশে আছি।</p>
+            <form id="loginForm">
+                <label for="email">আপনার ই-মেইল আইডি লিখুন</label>
+                <input type="email" id="email" placeholder="name@example.com" required>
+                <label for="password">আপনার পাসওয়ার্ড লিখুন</label>
+                <input type="password" id="password" placeholder="*********" required>
+              <br>
+                <button type="submit">লগইন</button>
+            </form>
+          <br>
+        </div>
+    </div>
+</body>
+</html>
